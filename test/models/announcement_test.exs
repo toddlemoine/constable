@@ -62,9 +62,9 @@ defmodule Constable.AnnouncementTest do
   describe ".last_discussed_first/1" do
     test "returns the last discussed announcement" do
       oldest = insert(:announcement, last_discussed_at: Constable.Time.days_ago(1))
-      newest = insert(:announcement, last_discussed_at: Constable.Time.now)
+      newest = insert(:announcement, last_discussed_at: Constable.Time.now())
 
-      announcements = Announcement.last_discussed_first |> Repo.all
+      announcements = Announcement.last_discussed_first() |> Repo.all()
 
       assert List.first(announcements).id == newest.id
       assert List.last(announcements).id == oldest.id
@@ -75,15 +75,17 @@ defmodule Constable.AnnouncementTest do
     test "interests are sorted alphabetically" do
       interest_a = insert(:interest, name: "a")
       interest_b = insert(:interest, name: "b")
+
       insert(:announcement)
-        |> tag_with_interest(interest_b)
-        |> tag_with_interest(interest_a)
+      |> tag_with_interest(interest_b)
+      |> tag_with_interest(interest_a)
 
-      announcement = Announcement.with_announcement_list_assocs
-        |> Repo.one
+      announcement =
+        Announcement.with_announcement_list_assocs()
+        |> Repo.one()
 
-      assert announcement.interests |> List.first == interest_a
-      assert announcement.interests |> List.last  == interest_b
+      assert announcement.interests |> List.first() == interest_a
+      assert announcement.interests |> List.last() == interest_b
     end
   end
 end
