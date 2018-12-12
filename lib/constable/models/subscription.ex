@@ -24,8 +24,16 @@ defmodule Constable.Subscription do
       preload: [:user]
   end
 
+  def subscribed?(user, announcement) do
+    !!Constable.Repo.get_by(
+      __MODULE__,
+      user_id: user.id,
+      announcement_id: announcement.id
+    )
+  end
+
   defp generate_token(changeset) do
     token = SecureRandom.urlsafe_base64(32)
-    put_change changeset, :token, token
+    put_change(changeset, :token, token)
   end
 end
