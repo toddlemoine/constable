@@ -42,17 +42,11 @@ defmodule ConstableWeb.AnnouncementController do
     announcement = Repo.get!(Announcement.with_announcement_list_assocs(), id)
     comment = Comment.create_changeset(%{})
 
-    subscription =
-      Repo.get_by(Subscription,
-        announcement_id: announcement.id,
-        user_id: conn.assigns.current_user.id
-      )
-
     conn
     |> render("show.html",
       announcement: announcement,
       comment_changeset: comment,
-      subscription: subscription,
+      subscribed?: Subscription.subscribed?(conn.assigns.current_user, announcement),
       users: Repo.all(User.active()),
       page_title: announcement.title
     )

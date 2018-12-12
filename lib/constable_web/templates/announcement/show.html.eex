@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="subscription">
-        <%= if @subscription do %>
+        <%= if @subscribed? do %>
           <%= link to: Routes.announcement_subscription_path(@conn, :delete, @announcement),
             method: :delete,
             class: "unsubscribe-to unsubscribe-to-thread" do %>
